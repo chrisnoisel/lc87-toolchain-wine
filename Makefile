@@ -1,11 +1,14 @@
 
 INSTALLER_URL = https://www.onsemi.com/pub/collateral/lc87series_tool_installer.zip
 
-.PHONY: clean toolchain
+.PHONY: clean toolchain example
 CACHE_DIR = cache
 TOOLCHAIN_DIR = lc87-toolchain
 
 toolchain: $(TOOLCHAIN_DIR)
+
+example: toolchain
+	$(MAKE) -C ./example/
 
 $(CACHE_DIR):
 	mkdir -p ./$@
@@ -48,6 +51,11 @@ $(TOOLCHAIN_DIR): $(CACHE_DIR)/SourceFiles $(CACHE_DIR)/code$$GetTrialDir$$v3.2r
 	rsync -a $(CACHE_DIR)/SourceFiles/lib $(CACHE_DIR)/toolchain
 	rsync -a $(CACHE_DIR)/SourceFiles/include $(CACHE_DIR)/toolchain
 	rsync -a $(CACHE_DIR)/SourceFiles/include.lsl $(CACHE_DIR)/toolchain
+	
+	cp -r src/script $(CACHE_DIR)/toolchain/
+	
+	chmod +x $(CACHE_DIR)/toolchain/bin/*
+	chmod +x $(CACHE_DIR)/toolchain/script/*
 	
 	rm -Rf ./$@
 	mv $(CACHE_DIR)/toolchain $@

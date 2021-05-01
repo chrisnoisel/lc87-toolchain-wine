@@ -1,0 +1,6 @@
+*.src
+*.obj
+*.bin
+*.map
+*.mdf
+*.hex
